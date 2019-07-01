@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+
+    <body>
+         <img src="{{album.album_logo}}">
+         <h1>{{album.album_title}}</h1>
+         <h3>{{album.artista}}</h3>
+
+            <!--- Mensagem de erro caso a música do album não exista !-->
+         {% if erro_message %}
+            <p><strong>{{ error_message }}</strong></p>
+         {% endif%}
+
+         <form action="{% url 'musica:favorite' album_id %}" method="post">
+            <!--csrf_token > Para poder fazer o set automaticamente -->
+            {% csrf_token %}
+             <!-- -->
+            { % for song in album.song_set.all %}
+            <input type="radio" id="song{{ fotloop.counter }}" name="song" value="{{song.id}}" />
+            <label for="song{{ fotloop.counter }}">
+                {{song.song_Title}}
+                {{% if song.is_favorite %}}
+                    <img src="https://ap.imagensbrasil.org/images/2017/01/23/favoritos-icon.png">
+                {{% endif %}}
+            </label><br>
+         {{% endfor %}}
+            <input type="submit" value="Favorite">
+         </form>
+
+         <!-- <ul>
+                {% for song in album.song_set.all%}
+                <li>{{song.song_title}} - {{song.file_type}} </li>
+                {% endfor %}
+            </ul>
+           -->
+    </body>
+
+</html>
